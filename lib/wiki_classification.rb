@@ -39,16 +39,18 @@ module Wiki
 
   def self.combine(*args)
     word_hash = Hash.new(0)
+    combined_name = []
 
     args.each do |words|
-      words.word_frequency.each do |word, freq|
+      combined_name << words.name
+      words.top_relevant.each do |word, freq|
         word_hash[word] += freq
       end
     end
 
     word_frequency = word_hash.sort_by{|_key, val| val}.reverse!
 
-    return Words.new(word_frequency)
+    return Words.new(word_frequency, name: combined_name.join('_'))
   end
 
 
@@ -115,7 +117,7 @@ module Wiki
       (sum_b_sq - ((sum_b**2)/common_words.size))
     )
 
-    den.zero? ? 0 : (num/den)
+    den.zero? ? 0 : (1-(num/den))
   end
 
   def self.most_like(person, *others)
@@ -123,7 +125,67 @@ module Wiki
     others.map do |other|
       sim << [other.name, Wiki.sim_pearsons(person, other)]
     end
-    sim.sort_by{ |other| other.last }.reverse!
+    sim.sort_by!{ |other| other.last }
+  end
+
+  class BiCluster
+    attr_reader :vec, :left, :right, :distance, :id
+
+    def initialize(vec, left: nil, right: nil, distance: 0.0)
+      @vec = vec
+      @left = left
+      @right = right
+      @distance = distance
+    end
+
+    def name
+      vec.name
+    end
+
+    def top_relevant
+      vec.top_relevant
+    end
+  end
+
+
+  module HCluster
+    def self.cluster(collection)
+      cluster = []
+      collection.each do |item|
+        cluster << BiCluster.new(item)
+      end
+
+      while cluster.length > 1
+
+        closeness = []
+        cluster.each do |item|
+          puts item.vec.name
+          others = cluster - [item]
+          sim = Wiki.most_like(item, *others)
+          puts sim.inspect
+          closeness << [item.name, sim.first]
+        end
+
+        closeness.sort_by!{ |name, score| score.last }
+
+        puts ''
+        puts '#################################'
+        puts '### REDUCED CLUSTER CLOSENESS ###'
+        puts closeness.inspect
+        puts '#################################'
+        puts ''
+
+
+        distance = closeness[0..1].inject(0){ |total, val| total += val.last.last}/2
+        left = cluster.detect{ |c| c.name == closeness[0].first }
+        right = cluster.detect{ |c| c.name == closeness[1].first }
+        combined = Wiki.combine(left, right)
+
+        cluster << BiCluster.new(combined, left: cluster.delete(left), right: cluster.delete(right), distance: distance)
+      end
+
+      cluster
+    end
   end
 end
 
@@ -140,8 +202,8 @@ ruby = Wiki.classify('http://en.wikipedia.org/wiki/Ruby_(programming_language)',
 scala = Wiki.classify('http://en.wikipedia.org/wiki/Scala_(programming_language)', name: 'scala')
 javascript = Wiki.classify('http://en.wikipedia.org/wiki/JavaScript', name: 'javascript')
 tennis = Wiki.classify('http://en.wikipedia.org/wiki/Tennis', name: 'tennis')
-basket_ball = Wiki.classify('http://en.wikipedia.org/wiki/Basketball', name: 'basket_ball')
-volley_ball = Wiki.classify('http://en.wikipedia.org/wiki/Volleyball', name: 'volley_ball')
+basketball = Wiki.classify('http://en.wikipedia.org/wiki/Basketball', name: 'basketball')
+volleyball = Wiki.classify('http://en.wikipedia.org/wiki/Volleyball', name: 'volleyball')
 
 
 collection = [
@@ -158,15 +220,10 @@ collection = [
   scala,
   javascript,
   tennis,
-  basket_ball,
-  volley_ball
+  basketball,
+  volleyball
 ]
 
-collection.each do |item|
-  puts item.name
-  others = collection - [item]
-  puts Wiki.most_like(item, *others).inspect
-end
+Wiki::HCluster.cluster(collection)
 
-# comb = Wiki.combine(*collection).word_frequency
-# puts comb[0..(comb.length*0.02)].map{|w| w[0]}.join(' ')
+
