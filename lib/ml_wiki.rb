@@ -3,6 +3,7 @@ require 'ml_wiki/words'
 require 'ml_wiki/excluded_words'
 require 'ml_wiki/pearsons_corelation'
 require 'ml_wiki/hcluster/hcluster'
+require 'ml_wiki/hcluster/bicluster'
 require 'open-uri'
 require 'nokogiri'
 # require 'redis'
@@ -49,27 +50,6 @@ module Wiki
     end
     sim.sort_by!{ |other| other.last }
   end
-
-  class BiCluster
-    attr_reader :vec, :left, :right, :distance, :id
-
-    def initialize(vec, left: nil, right: nil, distance: 0.0)
-      @vec = vec
-      @left = left
-      @right = right
-      @distance = distance
-    end
-
-    def name
-      vec.name
-    end
-
-    def top_relevant
-      vec.top_relevant
-    end
-  end
-
-
 end
 
 blair = Wiki.classify('http://en.wikipedia.org/wiki/Tony_Blair', name: 'blair')
