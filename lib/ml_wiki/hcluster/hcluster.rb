@@ -2,20 +2,16 @@ module Wiki
   module HCluster
 
     def self.cluster(collection)
-      cluster = []
-      collection.each do |item|
-        cluster << BiCluster.new(item)
-      end
+      cluster = collection.map{ |item| BiCluster.new(item) }
 
       while cluster.length > 1
 
-        closeness = []
-        cluster.each do |item|
+        closeness = cluster.map do |item|
           puts item.vec.name
           others = cluster - [item]
           sim = Wiki.most_like(item, *others)
           puts sim.inspect
-          closeness << [item.name, sim.first]
+          [item.name, sim.first]
         end
 
         closeness.sort_by!{ |name, score| score.last }
