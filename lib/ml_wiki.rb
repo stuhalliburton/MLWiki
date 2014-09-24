@@ -47,11 +47,11 @@ module Wiki
   end
 
   def self.most_like(person, *others)
-    sim = []
-    others.map do |other|
-      sim << [other.name, PearsonsCorelation.similarity(person, other)]
+    pool = TempPool::Pool.new(4)
+    others.each do |other|
+      pool.schedule{ [other.name, PearsonsCorelation.similarity(person, other)] }
     end
-    sim.sort_by!{ |other| other.last }
+    pool.value.sort_by!{ |other| other.last }
   end
 end
 
