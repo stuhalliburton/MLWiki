@@ -136,9 +136,8 @@ collection = [
 
 
 def print_cluster(cluster, n: 0)
-  puts (n>0 ? '    '*(n-1) : '') + (n>0 ? '+---' : '') + '+' + cluster.name
+  puts '    '*n + '-' + cluster.name
   return unless cluster.left || cluster.right
-  # puts '|   '*n + '|'
   print_cluster(cluster.left, n: n+1)
   print_cluster(cluster.right, n: n+1)
 end
