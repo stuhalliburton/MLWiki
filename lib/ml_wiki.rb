@@ -53,39 +53,83 @@ module Wiki
   end
 end
 
-blair = Wiki.word_count('http://en.wikipedia.org/wiki/Tony_Blair', name: 'blair')
-cameron = Wiki.word_count('http://en.wikipedia.org/wiki/David_Cameron', name: 'cameron')
-bush = Wiki.word_count('http://en.wikipedia.org/wiki/George_W._Bush', name: 'bush')
-dylan = Wiki.word_count('http://en.wikipedia.org/wiki/Bob_Dylan', name: 'dylan')
-sinatra = Wiki.word_count('http://en.wikipedia.org/wiki/Frank_Sinatra', name: 'sinatra')
-spears = Wiki.word_count('http://en.wikipedia.org/wiki/Britney_Spears', name: 'spears')
-murray = Wiki.word_count('http://en.wikipedia.org/wiki/Bill_Murray', name: 'murray')
-spacey = Wiki.word_count('http://en.wikipedia.org/wiki/Kevin_Spacey', name: 'spacey')
-liu = Wiki.word_count('http://en.wikipedia.org/wiki/Lucy_Liu', name: 'liu')
-ruby = Wiki.word_count('http://en.wikipedia.org/wiki/Ruby_(programming_language)', name: 'ruby')
-scala = Wiki.word_count('http://en.wikipedia.org/wiki/Scala_(programming_language)', name: 'scala')
-javascript = Wiki.word_count('http://en.wikipedia.org/wiki/JavaScript', name: 'javascript')
-tennis = Wiki.word_count('http://en.wikipedia.org/wiki/Tennis', name: 'tennis')
-basketball = Wiki.word_count('http://en.wikipedia.org/wiki/Basketball', name: 'basketball')
-volleyball = Wiki.word_count('http://en.wikipedia.org/wiki/Volleyball', name: 'volleyball')
+blair = Thread.new do
+  Wiki.word_count('http://en.wikipedia.org/wiki/Tony_Blair', name: 'blair')
+end
+
+cameron = Thread.new do
+  Wiki.word_count('http://en.wikipedia.org/wiki/David_Cameron', name: 'cameron')
+end
+
+bush = Thread.new do
+  Wiki.word_count('http://en.wikipedia.org/wiki/George_W._Bush', name: 'bush')
+end
+
+dylan = Thread.new do
+  Wiki.word_count('http://en.wikipedia.org/wiki/Bob_Dylan', name: 'dylan')
+end
+
+sinatra = Thread.new do
+  Wiki.word_count('http://en.wikipedia.org/wiki/Frank_Sinatra', name: 'sinatra')
+end
+
+spears = Thread.new do
+  Wiki.word_count('http://en.wikipedia.org/wiki/Britney_Spears', name: 'spears')
+end
+
+murray = Thread.new do
+  Wiki.word_count('http://en.wikipedia.org/wiki/Bill_Murray', name: 'murray')
+end
+
+spacey = Thread.new do
+  Wiki.word_count('http://en.wikipedia.org/wiki/Kevin_Spacey', name: 'spacey')
+end
+
+liu = Thread.new do
+  Wiki.word_count('http://en.wikipedia.org/wiki/Lucy_Liu', name: 'liu')
+end
+
+ruby = Thread.new do
+  Wiki.word_count('http://en.wikipedia.org/wiki/Ruby_(programming_language)', name: 'ruby')
+end
+
+scala = Thread.new do
+  Wiki.word_count('http://en.wikipedia.org/wiki/Scala_(programming_language)', name: 'scala')
+end
+
+javascript = Thread.new do
+  Wiki.word_count('http://en.wikipedia.org/wiki/JavaScript', name: 'javascript')
+end
+
+tennis = Thread.new do
+  Wiki.word_count('http://en.wikipedia.org/wiki/Tennis', name: 'tennis')
+end
+
+basketball = Thread.new do
+  Wiki.word_count('http://en.wikipedia.org/wiki/Basketball', name: 'basketball')
+end
+
+volleyball = Thread.new do
+  Wiki.word_count('http://en.wikipedia.org/wiki/Volleyball', name: 'volleyball')
+end
 
 
 collection = [
-  blair,
-  cameron,
-  bush,
-  dylan,
-  sinatra,
-  spears,
-  murray,
-  spacey,
-  liu,
-  ruby,
-  scala,
-  javascript,
-  tennis,
-  basketball,
-  volleyball
+  blair.value,
+  cameron.value,
+  bush.value,
+  dylan.value,
+  sinatra.value,
+  spears.value,
+  murray.value,
+  spacey.value,
+  liu.value,
+  ruby.value,
+  scala.value,
+  javascript.value,
+  tennis.value,
+  basketball.value,
+  volleyball.value
 ]
 
 
