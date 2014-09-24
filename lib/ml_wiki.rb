@@ -7,6 +7,7 @@ require 'ml_wiki/hcluster/bicluster'
 require 'open-uri'
 require 'nokogiri'
 # require 'redis'
+require 'benchmark'
 
 module Wiki
 
@@ -96,4 +97,6 @@ def print_cluster(cluster, n: 0)
   print_cluster(cluster.right, n: n+1)
 end
 
-print_cluster(Wiki::HCluster.cluster(collection))
+Benchmark.bm do |x|
+  x.report { print_cluster(Wiki::HCluster.cluster(collection)) }
+end
