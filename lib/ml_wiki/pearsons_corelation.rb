@@ -43,6 +43,10 @@ module PearsonsCorelation
       (sum_b_sq.value - ((sum_b.value**2)/n))
     )
 
-    den.zero? ? 0 : (1-(num/den))
+    begin
+      num/den
+    rescue ZeroDivisionError
+      return 0
+    end
   end
 end

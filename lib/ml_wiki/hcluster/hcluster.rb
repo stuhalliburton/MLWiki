@@ -14,7 +14,7 @@ module Wiki
           [item.name, sim.first]
         end
 
-        closeness.sort_by!{ |name, score| score.last }
+        closeness.sort_by!{ |name, score| score.last }.reverse!
 
         puts ''
         puts '#################################'

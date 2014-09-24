@@ -4,7 +4,9 @@ require 'ml_wiki/excluded_words'
 require 'ml_wiki/pearsons_corelation'
 require 'ml_wiki/hcluster/hcluster'
 require 'ml_wiki/hcluster/bicluster'
-require 'ml_wiki/hcluster/bicluster'
+require 'ml_wiki/kmeans_cluster/kmeans_cluster'
+require 'ml_wiki/kmeans_cluster/centroid'
+
 require 'temp_pool'
 require 'open-uri'
 require 'nokogiri'
@@ -51,7 +53,7 @@ module Wiki
     others.each do |other|
       pool.schedule{ [other.name, PearsonsCorelation.similarity(person, other)] }
     end
-    pool.value.sort_by!{ |other| other.last }
+    pool.value.sort_by!{ |other| other.last }.reverse!
   end
 end
 
@@ -134,7 +136,6 @@ collection = [
   volleyball.value
 ]
 
-
 def print_cluster(cluster, n: 0)
   puts '    '*n + '-' + cluster.name
   return unless cluster.left || cluster.right
@@ -142,6 +143,15 @@ def print_cluster(cluster, n: 0)
   print_cluster(cluster.right, n: n+1)
 end
 
+# Benchmark.bm do |x|
+#   x.report { print_cluster(Wiki::HCluster.cluster(collection)) }
+# end
+
 Benchmark.bm do |x|
-  x.report { print_cluster(Wiki::HCluster.cluster(collection)) }
+  x.report { Wiki::KMeansCluster.cluster(collection, k: 5) }
 end
+
+
+
+exit
+
