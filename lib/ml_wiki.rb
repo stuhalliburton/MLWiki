@@ -1,4 +1,4 @@
-require 'wiki_classification/version'
+require 'ml_wiki/version'
 require 'open-uri'
 require 'nokogiri'
 require 'redis'
@@ -18,23 +18,6 @@ module Wiki
       word_frequency
       # word_frequency.select{ |w, freq| freq > 4 }
     end
-  end
-
-  def self.classify_wo_exclusion(url)
-    doc = Nokogiri::HTML(open(url))
-
-    word_hash = Hash.new(0)
-
-    doc.xpath('//div[@id="mw-content-text"]/p').each do |tag|
-      words = tag.text.downcase.strip.scan(/[a-z'-]+/i)
-      words.each do |word|
-        word_hash[word] += 1
-      end
-    end
-
-    word_frequency = word_hash.sort_by{|_key, val| val}.reverse!
-
-    return Words.new(word_frequency)
   end
 
   def self.combine(*args)

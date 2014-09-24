@@ -1,10 +1,10 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'wiki_classification/version'
+require 'ml_wiki/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "wiki_classification"
+  spec.name          = "ml_wiki"
   spec.version       = WikiClassification::VERSION
   spec.authors       = ["Stu Halliburton"]
   spec.email         = ["stu.halliburton@gmail.com"]
