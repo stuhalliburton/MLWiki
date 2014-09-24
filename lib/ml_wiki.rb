@@ -26,7 +26,7 @@ module Wiki
     return Words.new(word_frequency, name: combined_name.join('_'))
   end
 
-  def self.classify(url, name: nil)
+  def self.word_count(url, name: nil)
     doc = Nokogiri::HTML(open(url))
 
     word_hash = Hash.new(0)
@@ -52,21 +52,21 @@ module Wiki
   end
 end
 
-blair = Wiki.classify('http://en.wikipedia.org/wiki/Tony_Blair', name: 'blair')
-cameron = Wiki.classify('http://en.wikipedia.org/wiki/David_Cameron', name: 'cameron')
-bush = Wiki.classify('http://en.wikipedia.org/wiki/George_W._Bush', name: 'bush')
-dylan = Wiki.classify('http://en.wikipedia.org/wiki/Bob_Dylan', name: 'dylan')
-sinatra = Wiki.classify('http://en.wikipedia.org/wiki/Frank_Sinatra', name: 'sinatra')
-spears = Wiki.classify('http://en.wikipedia.org/wiki/Britney_Spears', name: 'spears')
-murray = Wiki.classify('http://en.wikipedia.org/wiki/Bill_Murray', name: 'murray')
-spacey = Wiki.classify('http://en.wikipedia.org/wiki/Kevin_Spacey', name: 'spacey')
-liu = Wiki.classify('http://en.wikipedia.org/wiki/Lucy_Liu', name: 'liu')
-ruby = Wiki.classify('http://en.wikipedia.org/wiki/Ruby_(programming_language)', name: 'ruby')
-scala = Wiki.classify('http://en.wikipedia.org/wiki/Scala_(programming_language)', name: 'scala')
-javascript = Wiki.classify('http://en.wikipedia.org/wiki/JavaScript', name: 'javascript')
-tennis = Wiki.classify('http://en.wikipedia.org/wiki/Tennis', name: 'tennis')
-basketball = Wiki.classify('http://en.wikipedia.org/wiki/Basketball', name: 'basketball')
-volleyball = Wiki.classify('http://en.wikipedia.org/wiki/Volleyball', name: 'volleyball')
+blair = Wiki.word_count('http://en.wikipedia.org/wiki/Tony_Blair', name: 'blair')
+cameron = Wiki.word_count('http://en.wikipedia.org/wiki/David_Cameron', name: 'cameron')
+bush = Wiki.word_count('http://en.wikipedia.org/wiki/George_W._Bush', name: 'bush')
+dylan = Wiki.word_count('http://en.wikipedia.org/wiki/Bob_Dylan', name: 'dylan')
+sinatra = Wiki.word_count('http://en.wikipedia.org/wiki/Frank_Sinatra', name: 'sinatra')
+spears = Wiki.word_count('http://en.wikipedia.org/wiki/Britney_Spears', name: 'spears')
+murray = Wiki.word_count('http://en.wikipedia.org/wiki/Bill_Murray', name: 'murray')
+spacey = Wiki.word_count('http://en.wikipedia.org/wiki/Kevin_Spacey', name: 'spacey')
+liu = Wiki.word_count('http://en.wikipedia.org/wiki/Lucy_Liu', name: 'liu')
+ruby = Wiki.word_count('http://en.wikipedia.org/wiki/Ruby_(programming_language)', name: 'ruby')
+scala = Wiki.word_count('http://en.wikipedia.org/wiki/Scala_(programming_language)', name: 'scala')
+javascript = Wiki.word_count('http://en.wikipedia.org/wiki/JavaScript', name: 'javascript')
+tennis = Wiki.word_count('http://en.wikipedia.org/wiki/Tennis', name: 'tennis')
+basketball = Wiki.word_count('http://en.wikipedia.org/wiki/Basketball', name: 'basketball')
+volleyball = Wiki.word_count('http://en.wikipedia.org/wiki/Volleyball', name: 'volleyball')
 
 
 collection = [
